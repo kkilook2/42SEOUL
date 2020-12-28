@@ -2,5 +2,5 @@
 
 # 42SEOUL  
 42seoul 3rd cadet, yoncho`s repository :D
-HELLO 42 WORLD !!
+ 
 ---
