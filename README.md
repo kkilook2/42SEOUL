@@ -1,2 +1,2 @@
 # 42SEOUL
-42cursus_report
+> 42SEOUL cursus rep.
