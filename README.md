@@ -4,4 +4,4 @@
  
 Num | Project | Language | Topic | Date 
 ----|---------|----------|-------|------
- 1 | Libft | C | Mafefile, Headerfile(.h) | 2020.12.29
+ 1 | [Libft](https://github.com/kkilook2/42SEOUL/tree/main/1.Libft) | C | Mafefile, Headerfile | 2020.12.29
