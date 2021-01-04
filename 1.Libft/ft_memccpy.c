@@ -1,42 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_atoi.c                                          :+:      :+:    :+:   */
+/*   ft_memccpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yoncho <yoncho@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/12/24 02:21:21 by yoncho            #+#    #+#             */
-/*   Updated: 2020/12/30 22:45:30 by yoncho           ###   ########.fr       */
+/*   Created: 2020/12/29 15:28:34 by yoncho            #+#    #+#             */
+/*   Updated: 2020/12/30 00:41:20 by yoncho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int		ft_atoi(const char *c)
+void	*ft_memccpy(void *dst, const void *src, int c, size_t n)
 {
-	int			i;
-	long long	rt;
-	int			pm;
+	unsigned char	*d;
+	unsigned char	*s;
+	unsigned char	find;
+	size_t			i;
 
-	rt = 0;
+	find = c;
 	i = 0;
-	pm = 1;
-	while (c[i] && (c[i] == ' ' || (c[i] >= 9 && c[i] <= 13)))
-		i++;
-	if (c[i] && (c[i] == '-' || c[i] == '+'))
+	d = dst;
+	s = (unsigned char *)src;
+	while (i < n)
 	{
-		if (c[i] == '-')
-			pm *= -1;
+		d[i] = s[i];
+		if (s[i] == find)
+			return (dst + (i + 1));
 		i++;
 	}
-	while (c[i] && c[i] >= '0' && c[i] <= '9')
-	{
-		rt = rt * 10 + (c[i] - 48);
-		if (rt * pm > 2147483647)
-			return (-1);
-		else if (rt * pm < -2147483648)
-			return (0);
-		i++;
-	}
-	return (rt * pm);
+	return (NULL);
 }

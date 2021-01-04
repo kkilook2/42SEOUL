@@ -1,42 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_atoi.c                                          :+:      :+:    :+:   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yoncho <yoncho@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/12/24 02:21:21 by yoncho            #+#    #+#             */
-/*   Updated: 2020/12/30 22:45:30 by yoncho           ###   ########.fr       */
+/*   Created: 2020/12/30 21:44:55 by yoncho            #+#    #+#             */
+/*   Updated: 2020/12/31 01:01:39 by yoncho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int		ft_atoi(const char *c)
+char		*ft_strdup(const char *s)
 {
-	int			i;
-	long long	rt;
-	int			pm;
+	char	*st;
+	int		s_len;
+	int		i;
 
-	rt = 0;
 	i = 0;
-	pm = 1;
-	while (c[i] && (c[i] == ' ' || (c[i] >= 9 && c[i] <= 13)))
-		i++;
-	if (c[i] && (c[i] == '-' || c[i] == '+'))
+	s_len = ft_strlen(s) + 1;
+	st = (char *)malloc(s_len * sizeof(char));
+	if (!st)
+		return (NULL);
+	while (i < s_len)
 	{
-		if (c[i] == '-')
-			pm *= -1;
+		st[i] = s[i];
 		i++;
 	}
-	while (c[i] && c[i] >= '0' && c[i] <= '9')
-	{
-		rt = rt * 10 + (c[i] - 48);
-		if (rt * pm > 2147483647)
-			return (-1);
-		else if (rt * pm < -2147483648)
-			return (0);
-		i++;
-	}
-	return (rt * pm);
+	st[i] = '\0';
+	return (st);
+	free(st);
 }

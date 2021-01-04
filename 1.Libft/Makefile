@@ -6,11 +6,11 @@
 #    By: yoncho <yoncho@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/12/22 15:50:13 by yoncho            #+#    #+#              #
-#    Updated: 2020/12/28 21:21:13 by yoncho           ###   ########.fr        #
+#    Updated: 2021/01/02 08:33:00 by yoncho           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-TARGET = libft.a
+NAME = libft.a
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror
 
@@ -31,24 +31,50 @@ FILES = ft_isalpha.c\
 	ft_strrchr.c\
 	ft_memset.c\
 	ft_bzero.c\
-	ft_memcpy.c
+	ft_memcpy.c\
+	ft_memccpy.c\
+	ft_memmove.c\
+	ft_memchr.c\
+	ft_memcmp.c\
+	ft_calloc.c\
+	ft_strdup.c\
+	ft_substr.c\
+	ft_strjoin.c\
+	ft_strtrim.c\
+	ft_split.c\
+	ft_itoa.c\
+	ft_strmapi.c\
+	ft_putchar_fd.c\
+	ft_putstr_fd.c\
+	ft_putendl_fd.c\
+	ft_putnbr_fd.c
+
+B_FILES = ft_lstnew.c\
+	ft_lstadd_front.c\
+	ft_lstsize.c\
+	ft_lstlast.c\
+	ft_lstadd_back.c\
+	ft_lstdelone.c\
+	ft_lstclear.c\
+	ft_lstiter.c\
+	ft_lstmap.c
 
 OBJS = $(subst .c,.o,$(FILES))
+OBJS_B = $(subst .c,.o,$(B_FILES))
 
-all : $(TARGET)
+$(NAME) : $(OBJS)
+	ar rcs $(NAME) $(OBJS)
 
-$(TARGET) : 
-	$(CC) $(CFLAGS) -c $(FILES) libft.h
-	ar rcs  $(TARGET) $(OBJS)
+all : $(NAME)
 
-so :
-	$(CC) -fPIC $(CFLAGS) -c $(FILES)
-	gcc -shared -o libft.so $(OBJS)
+bonus : $(OBJS) $(OBJS_B)
+	ar rcs $(NAME) $(OBJS) $(OBJS_B)
 
 clean :
-	rm -f $(OBJS)
+	rm -f $(OBJS) $(OBJS_B)
 
 fclean : clean
-	rm -f $(TARGET) libft.so
+	rm -f $(NAME)
 
 re : fclean all
+.PHONY : all clean fclean re
