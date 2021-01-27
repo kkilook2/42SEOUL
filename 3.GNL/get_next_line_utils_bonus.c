@@ -6,7 +6,7 @@
 /*   By: yoncho <yoncho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/04 22:49:21 by yoncho            #+#    #+#             */
-/*   Updated: 2021/01/27 22:27:47 by yoncho           ###   ########.fr       */
+/*   Updated: 2021/01/26 22:23:36 by yoncho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,24 +22,28 @@ size_t		ft_strlen(const char *s)
 	return (i);
 }
 
-size_t		ft_strlcpy(char *dst, const char *src, size_t dstsize)
+size_t		ft_strlcpy(char *dest, const char *src, size_t dstsize)
 {
-	size_t	len;
+	size_t	src_len;
 	size_t	i;
 
-	i = 0;
-	len = 0;
-	while (src[len] != '\0')
-		len++;
+	src_len = 0;
+	while (src[src_len] != '\0')
+	{
+		src_len++;
+	}
 	if (dstsize == 0)
-		return (len);
+	{
+		return (src_len);
+	}
+	i = 0;
 	while (src[i] != '\0' && i < (dstsize - 1))
 	{
-		dst[i] = src[i];
+		dest[i] = src[i];
 		i++;
 	}
-	dst[i] = 0;
-	return (src);
+	dest[i] = 0;
+	return (src_len);
 }
 
 size_t		ft_strlcat(char *dest, const char *src, size_t dstsize)
@@ -64,44 +68,39 @@ size_t		ft_strlcat(char *dest, const char *src, size_t dstsize)
 
 char		*ft_strjoin(char *s1, char *s2)
 {
-	char	*str;
+	char	*newstr;
 	int		s1_len;
 	int		s2_len;
 
+	if (!(s1) && !(s2))
+		return (NULL);
+	else if (!(s1) || !(s2))
+		return (!(s1) ? ft_strdup(s2) : ft_strdup(s1));
 	s1_len = ft_strlen(s1);
 	s2_len = ft_strlen(s2);
-	if (!(s1) && !(s2))
-		return (0);
-	else if (!(s1) || !(s2))
-	{
-		if (!(s1))
-			return (ft_strdup(s2));
-		else
-			return (ft_strdup(s1));
-	}
-	if (!(str = (char *)malloc(sizeof(char) * (s1_len + s2_len + 1))))
-		return (0);
-	ft_strlcpy(str, s1, s1_len + 1);
+	if (!(newstr = (char *)malloc(sizeof(char) * (s1_len + s2_len + 1))))
+		return (NULL);
+	ft_strlcpy(newstr, s1, s1_len + 1);
 	free(s1);
-	ft_strlcat(str + (s1_len), s2, s2_len + 1);
-	return (str);
+	ft_strlcat(newstr + (s1_len), s2, s2_len + 1);
+	return (newstr);
 }
 
 char		*ft_strdup(char *s1)
 {
-	char	*str;
-	int		len;
+	char	*result;
+	int		i;
 
-	len = ft_strlen(s1);
-	str = (char *)malloc(sizeof(char) * (len + 1));
-	if (!str)
+	i = ft_strlen(s1);
+	result = (char *)malloc(sizeof(char) * (i + 1));
+	if (!result)
 		return (0);
-	len = 0;
-	while (s1[len])
+	i = 0;
+	while (s1[i])
 	{
-		str[len] = s1[len];
-		len++;
+		result[i] = s1[i];
+		i++;
 	}
-	str[len] = '\0';
-	return (str);
+	result[i] = '\0';
+	return (result);
 }
