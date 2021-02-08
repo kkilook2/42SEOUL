@@ -6,18 +6,13 @@
 /*   By: yoncho <yoncho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/30 19:54:28 by yoncho            #+#    #+#             */
-/*   Updated: 2021/02/06 22:10:57 by yoncho           ###   ########.fr       */
+/*   Updated: 2021/02/09 03:53:46 by yoncho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-void    putchr(char s)
-{
-    write(1, &s, 1);
-}
-
-void  reset_flags(flags *flag)
+void	ft_init_flags(t_flags *flag)
 {
     flag->minus = 0;
     flag->dot = 0;
@@ -27,107 +22,67 @@ void  reset_flags(flags *flag)
     flag->zero = 0;
 }
 
-
-int		ft_parse_char(flags *flag, va_list ap)
+char	*ft_format_parse(const char **format, t_flags *flag, va_list ap)
 {
-	int i;
-	int	ret;
+	char	*ret;
 	
-	if (flag->star == 1)
-		i = va_arg(ap, int);
-	else
-		i = flag->width;
-	ret = i;
-	if (flag->minus == 1)
-	{
-		putchr(va_arg(ap, int));
-		while(i-- > 1)
-			putchr(' ');
-	}
-	else if (flag->minus == 0)
-	{
-		while(i-- > 1)
-			putchr(' ');
-		putchr(va_arg(ap, int));
-	}
-	if (ret == 0)
-		return (1);
-	return (ret);
+	ret = 0;
+	if (**format == 'c')
+		ret = ft_get_char(va_arg(ap, int));
+	else if (**format == '%')
+		ret = ft_get_char('%');
+	else if (**format == 's')
+		ret = ft_get_string(va_arg(ap, char *));
+	else if (**format == 'd' || **format == 'i')
+		ret = ft_get_integer(va_arg(ap, int));
+	return ret;
 }
 
-
-int     ft_treatment(int c, flags *flag, va_list ap)
+//flag 정보 저장 (0, -, width, prec)
+void     ft_flag_parse(const char **format, t_flags *flag, va_list ap)
 {
-	int	len;
-
-	len = 0;
-	
-	if (c == 'c')
-	{
-		len += ft_parse_char(flag, ap);
-	}
-	return (len);
-}
-
-int     ft_flag_parse(const char *format, int i, flags *flag, va_list ap)
-{
-    while (format[i])
+    while (!check_format(format))
     {
-		if (!(ft_isdigit(format[i])) && !(ft_strchr("csdixX%up", format[i])) && !(ft_strchr("-0.*", format[i])))
-			break;
-		else if (format[i - 1] == '%' && format[i] == '0')
-			flag->zero = 1;
-		else if (format[i] =='-')
+		if (**format == '0')
+			flag->zero = 1;		
+		else if (**format =='-')
 			flag->minus = 1;
-		else if (format[i] == '*')
-			flag->star = 1;
-		else if ((!(flag->dot) && format[i] == '*') || ft_isdigit(format[i]))
-			flag->width = (flag->width) * 10 + format[i] - '0';
-		else if (format[i] == '.')
+		else if (!(flag->dot) && (**format == '*' || ft_isdigit(**format)))
+			flag->width = ft_treat_width(format, ap, flag);
+		else if (**format == '.')
 		{
 			flag->dot = 1;
-			flag->prec = format[i] - '0';
+			flag->prec = ft_treat_prec(format, ap);
 		}
-		else if (ft_strchr("csdixXup", format[i]))
-			return (i);
-        i++;
+		else if (!(ft_strchr(".-0*", **format)))
+			ft_putchar_fd(**format, 1);
+        (*format)++;
     }
-    return i;
 }
 
 int     ft_treat_format(const char *format, va_list ap, int len)
 {
-    int     i;
-    flags  flag;
-    
-    i = 0;
-    while (true)
+    char	*form_str;
+	t_flags	*flag;
+	
+	flag = malloc(sizeof(t_flags));
+	ft_init_flags(flag);
+    while (*format)
     {
-		reset_flags(&flag);
-		if (format[i] == 0)
-            break;
-		if (format[i] == '%' && format[i + 1] == '%')
-		{
-			putchr('%');
-			len++;
-		}	
-        else if (format[i] == '%' && format[i + 1] != '\0')
+    	if (*format == '%')
         {
-            i = ft_flag_parse(format, i, &flag, ap);
-            if (ft_strchr("csdixXu%p", format[i]))
-                len += ft_treatment(format[i], &flag, ap);
-            else if (format[i] != '\0')
-            {
-                putchr(format[i]);
-                len++;
-            }
+			format++;
+     		ft_flag_parse(&format, flag, ap);
+			form_str = ft_format_parse(&format, flag, ap);
+			len += ft_format_print(&format, form_str, flag, len);
+			ft_init_flags(flag);
         }
-        else if (format[i] != '%')
+        else //format != % 
         {
-            putchr(format[i]);
+            ft_putchar_fd(*format, 1);
             len++;
         }
-        i++;
+        format++;
     }
     return (len);
 }
@@ -148,10 +103,82 @@ int     ft_printf(const char *input, ...)
     return (len);
 }  
 
+int		main(void)
+{
+	ft_printf("hello world %-*.*s\n",3, 4, "abcdefg");
+	printf("hello world %-3.4s\n", "abcdefg");
+	ft_printf("%4.3s\n", "abcdefg");
+	printf("%4.3s\n", "abcdefg");
+	// c
+	printf("========== type c ==========\n");
+	printf(", size: %d\n", printf("%*.*c",10, 5,'a'));
+	printf(", size: %d\n", ft_printf("%*.5c",10, 'a'));
+	
+	// s
+	printf("========== type s ==========\n");
+	printf(", size: %d\n", printf("%5.4s", "abcde"));
+	printf(", size: %d\n", ft_printf("%*.4s",5, "abcde"));
+
+	// //p
+	// printf("========== type p ==========\n");
+	// printf(", size: %d\n", printf("%p", 0x101132f47));
+	// printf(", size: %d\n", ft_printf("%p", 0x101132f47));
+
+	// // d
+	// printf("========== type d ==========\n");
+	// printf(", size: %d\n", printf("%d", 23452));
+	// printf(", size: %d\n", ft_printf("%d", 23452));
+
+	// // i
+	// printf("========== type i ==========\n");
+	// printf(", size: %d\n", printf("%i", 23452));
+	// printf(", size: %d\n", ft_printf("%i", 23452));
+
+	// // u
+	// printf("========== type u ==========\n");
+	// printf(", size: %d\n", printf("%u", 23452));
+	// printf(", size: %d\n", ft_printf("%u", 23452));
+
+	// // x
+	// printf("========== type x ==========\n");
+	// printf(", size: %d\n", printf("%x", 113801));
+	// printf(", size: %d\n", ft_printf("%x", 113801));
+	
+	// // X
+	// printf("========== type X ==========\n");
+	// printf(", size: %d\n", printf("%X", 113801));
+	// printf(", size: %d\n", ft_printf("%X", 113801));
+
+
+	// %
+	printf("========== type %% ==========\n");
+	printf(", size: %d\n", printf("%%"));
+	printf(", size: %d\n", ft_printf("%%"));
+	
+	return (0);
+}
+
+/*
 int main()
 {
-	printf("%d", ft_printf("hello %-*c wo%%rld %-6c", 5,'a', 'b'));
-	printf("\n");
-	printf("%d", printf("hello %-*c wo%%rld %-6c", 5,'a', 'b'));
-    return (0);
+	ft_printf("%-*.*s\n",3, 4, "abcdefg");
+	printf("%-3.4s\n", "abcdefg");
+	ft_printf("%4.3s\n", "abcdefg");
+	printf("%4.3s\n", "abcdefg");
+	
+	ft_printf("%*c\n", 5, 'a');
+	printf("%*c\n", 5, 'a');
+	ft_printf("hello %% world %5.5c\n", 'a');
+	printf("hello %% world %5.5c\n", 'a');
+	
+	ft_printf("hello %-10.5s world\n", "hello world");
+	printf("hello %-10.5s world\n", "hello world");
+	
+	ft_printf("%5.5d\n", 20210208 );
+	printf("%5.5d\n", 20210208 );
+	
+	return (0);
+	
+	
 }
+*/
