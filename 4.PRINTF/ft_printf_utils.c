@@ -6,7 +6,7 @@
 /*   By: yoncho <yoncho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/30 21:43:36 by yoncho            #+#    #+#             */
-/*   Updated: 2021/02/10 17:55:23 by yoncho           ###   ########.fr       */
+/*   Updated: 2021/02/10 18:40:10 by yoncho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ char    *ft_get_string(char *s)
 	char *ret;
 	
 	if (s == 0)
-    	return (ft_strdup("(null)"));
+    	return (ft_strdup("\0"));
 	ret = ft_strdup(s);
 	return ret;
 }
@@ -117,8 +117,8 @@ char	*ft_get_pointer(unsigned long long i)
 		*ret = '0';
 	while ( i != 0)
 	{
-		ret[--len] = hexa_info[p % 16];
-		p /= 16;
+		ret[--len] = hexa_info[i % 16];
+		i /= 16;
 	}
 	ret = ft_strjoin("0x", ret);
 	return (ret);
