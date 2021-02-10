@@ -6,7 +6,7 @@
 /*   By: yoncho <yoncho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/30 21:43:36 by yoncho            #+#    #+#             */
-/*   Updated: 2021/02/10 18:40:10 by yoncho           ###   ########.fr       */
+/*   Updated: 2021/02/10 18:44:04 by yoncho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ char    *ft_get_string(char *s)
 	char *ret;
 	
 	if (s == 0)
-    	return (ft_strdup("\0"));
+    	return (ft_strdup("(null)"));
 	ret = ft_strdup(s);
 	return ret;
 }
