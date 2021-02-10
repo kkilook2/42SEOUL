@@ -6,7 +6,7 @@
 /*   By: yoncho <yoncho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/30 21:43:36 by yoncho            #+#    #+#             */
-/*   Updated: 2021/02/10 17:45:44 by yoncho           ###   ########.fr       */
+/*   Updated: 2021/02/10 17:55:23 by yoncho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,6 @@ char    *ft_get_integer(const char **format, unsigned long long i)
 	
 	if (**format == 'u' && i < 0)
 		return (0);
-	printf("[%s]", ft_itoa(i));
 	ret = ft_strdup(ft_itoa(i));
 	return ret;
 }

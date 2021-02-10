@@ -6,7 +6,7 @@
 /*   By: yoncho <yoncho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/30 19:54:28 by yoncho            #+#    #+#             */
-/*   Updated: 2021/02/10 17:45:29 by yoncho           ###   ########.fr       */
+/*   Updated: 2021/02/10 17:55:32 by yoncho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int     ft_treat_format(const char *format, va_list ap, int len)
 			len += ft_format_print(&format, form_str, flag, len);
 			ft_init_flags(flag);
         }
-        else //format != % 
+        else
         {
             ft_putchar_fd(*format, 1);
             len++;
@@ -108,103 +108,3 @@ int     ft_printf(const char *input, ...)
     free((char *)format);
     return (len);
 }  
-
-// int	main(void)
-// {
-// 	// printf(", size: %d\n", printf("%*.*d", -4, 0, 8));
-// 	// printf(", size: %d\n", ft_printf("%*.*d", -4, 0, 8));
-// 	printf("%u\n", 4294967284);
-// 	ft_printf("%u", 4294967284);
-
-// 	printf("\n%s\n", ft_itoa(4294967284));
-// 	ft_printf("%s", ft_itoa(4294967284));
-
-// }
-	
-// 	// c
-// 	printf("========== type c ==========\n");
-// 	printf(", size: %d\n", printf("%*.5c",10,'a'));
-// 	printf(", size: %d\n", ft_printf("%*.5c",10, 'a'));
-	
-// 	printf(", size: %d\n", printf("%-10c",'a'));
-// 	printf(", size: %d\n", ft_printf("%-10c",'a'));
-	
-// 	printf(", size: %d\n", printf("%0.*c", 5,'a'));
-// 	printf(", size: %d\n", ft_printf("%0.5c",'a'));
-	
-// 	// s
-// 	printf("========== type s ==========\n");
-// 	printf(", size: %d\n", printf("%s", ""));
-// 	printf(", size: %d\n", ft_printf("%s", ""));
-// 	printf(", size: %d\n", printf("hello %-5.4s world %4s%%", "abcde", "fg"));
-// 	printf(", size: %d\n", ft_printf("hello %-*.4s world %4s%%",5, "abcde", "fg"));
-// 	printf(", size: %d\n", printf("%5.7s", "abcd"));
-// 	printf(", size: %d\n", ft_printf("%*.*s",5, 7,"abcd"));
-
-// // 	// //p
-// // 	// printf("========== type p ==========\n");
-// // 	// printf(", size: %d\n", printf("%p", 0x101132f47));
-// // 	// printf(", size: %d\n", ft_printf("%p", 0x101132f47));
-
-// 	// d
-// 	printf("========== type d ==========\n");
-// 	printf(", size: %d\n", printf("%.*d", -4,0));
-// 	printf(", size: %d\n", ft_printf("%.*d",-4, 0));
-
-// 	printf(", size: %d\n", printf("%0.0d",0));
-// 	printf(", size: %d\n", ft_printf("%0.0d", 0));
-
-// 	printf(", size: %d\n", printf("%-0.0d", 0));
-// 	printf(", size: %d\n", ft_printf("%-0.0d", 0));
-
-// 	printf(", size: %d\n", printf("%d", 0));
-// 	printf(", size: %d\n", ft_printf("%d", 0));
-
-// 	printf(", size: %d\n", printf("%0d", 234));
-// 	printf(", size: %d\n", ft_printf("%0d", 234));
-
-// 	printf(", size: %d\n", printf("%3.0d",234));
-// 	printf(", size: %d\n", ft_printf("%3.0d", 234));
-	
-// 	printf(", size: %d\n", printf("%0.0d", 234));
-// 	printf(", size: %d\n", ft_printf("%0.0d", 234));
-// 	printf(", size: %d\n", printf("%07d", 234));
-// 	printf(", size: %d\n", ft_printf("%07d", 234));
-// 	printf(", size: %d\n", printf("%-07d", 23456));
-// 	printf(", size: %d\n", ft_printf("%-07d", 23456));
-
-
-// 	//mid test
-// 	printf("========== mid test ==========\n");
-// 	printf(", size: %d\n", printf("Hello %4.3c world %5.4s is %0d", 'a', "python", 444));
-// 	printf(", size: %d\n", ft_printf("Hello %4.3c world %5.4s is %0d", 'a', "python", 444));
-
-
-// 	// i
-// 	printf("========== type i ==========\n");
-// 	printf(", size: %d\n", printf("%i", 23452));
-// 	printf(", size: %d\n", ft_printf("%i", 23452));
-
-// // 	// // u
-// // 	// printf("========== type u ==========\n");
-// // 	// printf(", size: %d\n", printf("%u", 23452));
-// // 	// printf(", size: %d\n", ft_printf("%u", 23452));
-
-// 	// x
-// 	printf("========== type x ==========\n");
-// 	printf(", size: %d\n", printf("%x", 113801));
-// 	printf(", size: %d\n", ft_printf("%x", 113801));
-	
-// 	// X
-// 	printf("========== type X ==========\n");
-// 	printf(", size: %d\n", printf("hello world %X to %x", 113801, 113801));
-// 	printf(", size: %d\n", ft_printf("hello world %X to %x", 113801, 113801));
-
-
-// 	// // %
-// 	// printf("========== type %% ==========\n");
-// 	// printf(", size: %d\n", printf("%%"));
-// 	// printf(", size: %d\n", ft_printf("%%"));
-	
-// 	return (0);
-// }
