@@ -6,107 +6,13 @@
 /*   By: yoncho <yoncho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/30 21:43:36 by yoncho            #+#    #+#             */
-/*   Updated: 2021/02/10 00:58:35 by yoncho           ###   ########.fr       */
+/*   Updated: 2021/02/10 16:05:07 by yoncho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-char	*ft_strncpy(char *form_str, t_flags *flag)
-{
-  char	*ret;
-  int	i;
-  
-  ret = (char *)malloc(sizeof(char) * flag->prec + 1);
-  i = 0;
-  while (i < flag->prec)
-  {
-	  ret[i] = form_str[i];
-	  i++;
-  }
-  ret[i] = '\0';
-  return ret;
-}
 
-char	*ft_strncpy_int(char *form_str, t_flags *flag)
-{
-  	char	*ret;
-	int	form_len;
-	int	i;
-	int k;
-	k = 0;
-	
-	ret = (char *)malloc(sizeof(flag->prec));
-	i = -1;
-	form_len = ft_strlen(form_str);
-	
-	if (flag->prec > form_len)
-	{
-		while (++i < ((flag->prec) - form_len))
-			ret[i] = '0';
-		while (i < flag->prec)
-	  		ret[i++] = form_str[k++];
-		ret[flag->prec] = '\0';
-  }
-  else
-  {
-	  ret = form_str;
-  }
-	return ret;
-}
-
-char	*ft_final_proc(char *form_str ,t_flags *flag, int form_len, char a)
-{
-	char	*ret;
-	int	i;
-	int k;
-
-	k = 0;
-	i = -1;
-	ret = (char *)malloc(sizeof(flag->width));
-	if (flag->minus)
-	{
-    	while (++i < form_len)
-      		ret[i] = form_str[i];
-    	while (i < flag->width)
-      		ret[i++] = a;
-	}
-	else
-	{
-		while (++i < (flag->width) - form_len)
-     		ret[i] = a;
-    	while (i < flag->width)
-      		ret[i++] = form_str[k++];
-	}
-	ret[flag->width] = '\0';
-	return ret;
-}
-
-
-char	*ft_cs_proc(char *form_str, t_flags *flag)
-{
-	char	*ret;
-	int	form_len;
-
-	ret = (char *)malloc(sizeof(flag->width));
-	form_len = ft_strlen(form_str);
-	ret = ft_final_proc(form_str, flag, form_len, ' ');
-	return ret;
-}
-
-char	*ft_di_proc(char *form_str, t_flags *flag)
-{
-	char	*ret;
-	int	form_len;
-	
-	ret = (char *)malloc(sizeof(flag->width));
-	form_len = ft_strlen(form_str);
-	if (flag->zero == 1 && flag->minus == 0)
-		ret = ft_final_proc(form_str ,flag,form_len, '0');
-	else
-		ret = ft_final_proc(form_str, flag, form_len, ' ');
-	return ret;
-}
 
 int		ft_treat_width(const char **format, va_list ap, t_flags *flag)
 {
@@ -163,6 +69,7 @@ int   check_format(const char **format)
 char    *ft_get_char(char c)
 {
   char *ret;
+  
   ret = (char *)malloc(sizeof(char) * 2);
   *ret = c;
   ret[1] = '\0';
@@ -171,33 +78,50 @@ char    *ft_get_char(char c)
 
 char    *ft_get_string(char *s)
 {
-  char *ret;
-  if (s == 0)
-    return (ft_strdup(" "));
-  ret = ft_strdup(s);
-  return ret;
+	char *ret;
+	
+	if (s == 0)
+    	return (ft_strdup("(null)"));
+	ret = ft_strdup(s);
+	return ret;
 }
 
-char    *ft_get_integer(int i, t_flags *flag)
+char    *ft_get_integer(const char **format, unsigned long long i)
 {
 	char *ret;
-	if (i == 0 && flag->dot && (flag->prec != 0))
-		return (ft_strdup("0"));
-	else if (i == 0 && flag->dot)
-		return (ft_strdup(""));
-  	ret = ft_strdup(ft_itoa(i));
-  	return ret;
+	
+	if (**format == 'u' && i == 0)
+		return (0);
+	ret = ft_strdup(ft_itoa(i));
+	return ret;
 }
 
-char    *ft_get_uint(unsigned int i, t_flags *flag)
+char	*ft_get_pointer(unsigned long long i)
 {
-	char *ret;
-	if (i == 0 && flag->dot && (flag->prec != 0))
-		return (ft_strdup("0"));
-	else if (i == 0 && flag->dot)
-		return (ft_strdup(""));
-  	ret = ft_strdup(ft_itoa(i));
-  	return ret;
+	char	*ret;
+	char	*hexa_info;
+	unsigned long long p;
+	int		len;
+	
+	hexa_info = "0123456789abcdef";
+	len = 0;
+	p = i;
+	while ( p != 0)
+	{
+		p /= 16;
+		len++;
+	}
+	ret = malloc(sizeof(char) * len + 1);
+	ret[len] = '\0';
+	if (i == 0)
+		*ret = '0';
+	while ( i != 0)
+	{
+		ret[--len] = hexa_info[p % 16];
+		p /= 16;
+	}
+	ret = ft_strjoin("0x", ret);
+	return (ret);
 }
 
 char    *ft_get_hexa(const char **format, unsigned int i)

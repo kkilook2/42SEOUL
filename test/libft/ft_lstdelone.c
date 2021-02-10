@@ -1,12 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_print_type.c                                    :+:      :+:    :+:   */
+/*   ft_lstdelone.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoncho <yoncho@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yoncho <yoncho@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/02/07 14:19:14 by yoncho            #+#    #+#             */
-/*   Updated: 2021/02/07 14:19:23 by yoncho           ###   ########.fr       */
+/*   Created: 2021/01/01 22:35:57 by yoncho            #+#    #+#             */
+/*   Updated: 2021/01/02 03:34:55 by yoncho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
+
+void	ft_lstdelone(t_list *lst, void (*del)(void *))
+{
+	if (lst)
+	{
+		del(lst->content);
+		free(lst);
+	}
+}

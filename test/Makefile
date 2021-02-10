@@ -6,31 +6,48 @@
 #    By: yoncho <yoncho@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/06 02:39:36 by yoncho            #+#    #+#              #
-#    Updated: 2021/02/09 12:46:31 by yoncho           ###   ########.fr        #
+#    Updated: 2021/02/09 20:51:59 by yoncho           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = ft_printf.a
-CC = gcc
-CFLAGS = -Wall -Wextra -Werror
+NAME	= libftprintf.a
+LIBFT	= ./libft
 
-FILES = ft_printf.c\
+CC		= gcc
+CFLAGS	= -Wall -Wextra -Werror
+AR		= ar rcs
+RM		= rm -f
+
+SRCS	= ft_printf.c\
 		ft_printf_utils.c\
 		ft_printf_format_utils.c\
 
-OBJS = $(subst .c,.o,$(FILES))
+BSRCS	=
+
+OBJS	= $(SRCS:.c=.o)
+BOBJS	= $(BSRCS:.c=.o)
+
+.c.o:
+	$(CC) $(CFLAGS) -c $< -I.
+
+$(NAME) : $(OBJS)
+	make -C $(LIBFT)
+	cp $(LIBFT)/libft.a $(NAME)
+	$(AR) $@ $^
+
+bonus : $(BOBJS)
+	$(AR) $(NAME) $^
 
 all : $(NAME)
 
-$(NAME) : $(OBJS)
-	ar rcs $(NAME) $(OBJS)
-
 clean :
-	rm -f $(OBJS)
+	make -C $(LIBFT) clean
+	$(RM) $(OBJS) $(BOBJS)
 
 fclean : clean
-	rm -f $(NAME)
+	make -C $(LIBFT) fclean
+	$(RM) $(NAME)
 
-re : fclean all
-.PHONY : all clean fclean re
+re : clean all
 
+.PHONY : all clean fclean re bonus

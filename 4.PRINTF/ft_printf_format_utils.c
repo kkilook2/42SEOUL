@@ -6,7 +6,7 @@
 /*   By: yoncho <yoncho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/07 20:08:16 by yoncho            #+#    #+#             */
-/*   Updated: 2021/02/09 00:32:47 by yoncho           ###   ########.fr       */
+/*   Updated: 2021/02/10 00:54:27 by yoncho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,25 +14,28 @@
 
 int		ft_format_print(const char **format, char *form_str, t_flags *flag, int len)
 {
-	int	_null;
+	// int	_null;
 
-	_null = 0;
-	if (**format == 'c' && *form_str == 0)
-		_null = 1;
+	// _null = 0;
+	// if (**format == 'c' && *form_str == 0)
+	// 	_null = 1;
 	//printf("[%s]", form_str);
 	//printf("flag is | %d | %d | %d |\n", flag->dot, flag->width, flag->prec);
 	if (flag->dot)
 	{
 		if (flag->prec < 0)
 			flag->dot = 0;
-		if (**format == 's')
+		else if (**format == 's')
 			form_str = ft_strncpy(form_str, flag);
+		else if (**format == 'd' || **format == 'i' || **format == 'u' || **format == 'x' || **format == 'X' )
+			form_str = ft_strncpy_int(form_str, flag);
 		form_str = ft_proc_prec(format, form_str, flag);
 	}
-	//printf("after is cpy = [ %s ]",  form_str);
 	if (flag->width)
 		form_str = ft_proc_width(format, form_str, flag);
+	form_str = ft_strdup(form_str);
 	write(1, form_str, ft_strlen(form_str));
+	len = ft_strlen(form_str);
 	return (len);
 }
 
@@ -47,7 +50,7 @@ char	*ft_proc_prec(const char **format, char *form_str, t_flags *flag)
 		if (**format == 's')
 			ret = ft_strncpy(form_str, flag);
 		else
-			ret = form_str;
+			ret = ft_strncpy_int(form_str, flag);
 	}
 	else //정밀도보다 문자열길이가 작을때
 		ret = form_str;
@@ -59,12 +62,18 @@ char	*ft_proc_width(const char **format, char *form_str, t_flags *flag)
 {
 	char	*ret;
 	
-	if( ft_strlen(form_str) > flag->width)
+	if( (int)ft_strlen(form_str) > flag->width)
 		return form_str;
 	if (**format == 'c' || **format == 's')
 		ret = ft_cs_proc(form_str, flag);
 	if (**format == 'd' || **format == 'i')
-		printf("not yet");
+		ret = ft_di_proc(form_str, flag);
+	if (**format == 'x' || **format == 'X')
+		ret = ft_di_proc(form_str, flag);
+	if (**format == 'u' || **format == 'p')
+		ret = "test";
+		
+	
 	//printf("[%s]", ret);
 	//ret = ft_strdup(form_str);
 	return ret;

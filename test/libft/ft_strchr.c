@@ -1,21 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_treat_format.c                                  :+:      :+:    :+:   */
+/*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoncho <yoncho@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yoncho <yoncho@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/02/07 14:51:37 by yoncho            #+#    #+#             */
-/*   Updated: 2021/02/07 16:11:18 by yoncho           ###   ########.fr       */
+/*   Created: 2020/12/28 16:28:28 by yoncho            #+#    #+#             */
+/*   Updated: 2020/12/28 17:32:16 by yoncho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "libft.h"
 
-int   check_format(char format)
+char	*ft_strchr(const char *s, int c)
 {
-  if ((ft_isdigit(format)) && (ft_strchr("csdixX%up", format)) 
-      && (ft_strchr("-0.*", format)))
-			return (1);
-  return (0);
+	while (*s != '\0')
+	{
+		if (*s == c)
+			return ((char *)s);
+		++s;
+	}
+	if (c == '\0')
+		return ((char *)s);
+	return (0);
 }

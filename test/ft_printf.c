@@ -6,7 +6,7 @@
 /*   By: yoncho <yoncho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/30 19:54:28 by yoncho            #+#    #+#             */
-/*   Updated: 2021/02/10 00:55:57 by yoncho           ###   ########.fr       */
+/*   Updated: 2021/02/10 16:04:58 by yoncho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	ft_init_flags(t_flags *flag)
     flag->zero = 0;
 }
 
-char	*ft_format_parse(const char **format, t_flags *flag, va_list ap)
+char	*ft_format_parse(const char **format, va_list ap)
 {
 	char	*ret;
 	
@@ -32,17 +32,19 @@ char	*ft_format_parse(const char **format, t_flags *flag, va_list ap)
 	else if (**format == '%')
 		ret = ft_get_char('%');
 	else if (**format == 's')
-		ret = ft_get_string(va_arg(ap, char *));
+		ret = ft_get_string(va_arg(ap, char*));
 	else if (**format == 'd' || **format == 'i')
-		ret = ft_get_integer(va_arg(ap, int), flag);
+		ret = ft_get_integer(format, va_arg(ap, int));
+	else if (**format == 'u')
+		ret = ft_get_integer(format, va_arg(ap, unsigned int));
 	else if (**format == 'x' || **format == 'X')
 		ret = ft_get_hexa(format, va_arg(ap, unsigned int));
-	else if (**format == 'u' || **format == 'p')
-		ret = "test";	
+	else if (**format == 'p')
+		ret = ft_get_pointer(va_arg(ap, unsigned long long));
+		
 	return ret;
 }
 
-//flag 정보 저장 (0, -, width, prec)
 void     ft_flag_parse(const char **format, t_flags *flag, va_list ap)
 {
     while (!check_format(format))
@@ -77,7 +79,7 @@ int     ft_treat_format(const char *format, va_list ap, int len)
         {
 			format++;
      		ft_flag_parse(&format, flag, ap);
-			form_str = ft_format_parse(&format, flag, ap);
+			form_str = ft_format_parse(&format, ap);
 			len += ft_format_print(&format, form_str, flag, len);
 			ft_init_flags(flag);
         }
@@ -88,6 +90,7 @@ int     ft_treat_format(const char *format, va_list ap, int len)
         }
         format++;
     }
+	free(flag);
     return (len);
 }
 
