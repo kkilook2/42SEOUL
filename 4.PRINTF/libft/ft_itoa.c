@@ -6,51 +6,63 @@
 /*   By: yoncho <yoncho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/01 02:02:11 by yoncho            #+#    #+#             */
-/*   Updated: 2021/01/01 03:26:57 by yoncho           ###   ########.fr       */
+/*   Updated: 2021/02/10 17:44:18 by yoncho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void			procces(char *str, int cnt, int nt)
+long long	ft_abs(long long n)
 {
-	long long	n;
+	long long	num;
 
-	n = nt;
+	num = n;
 	if (n < 0)
-	{
-		str[0] = '-';
-		n *= -1;
-	}
-	str[cnt] = '\0';
-	while (1)
-	{
-		str[cnt - 1] = n % 10 + '0';
-		n = n / 10;
-		if (!n)
-			break ;
-		cnt--;
-	}
+		num = num * (-1);
+	return (num);
 }
 
-char			*ft_itoa(int n)
+int			ft_sizecheck(long long n)
 {
-	char		*str;
-	int			cnt;
-	int			nt;
+	long long		num;
+	unsigned int	count;
 
-	nt = n;
-	cnt = 1;
-	if (n < 0)
-		cnt = 2;
-	while (1)
+	count = 0;
+	num = ft_abs(n);
+	if (n == 0)
+		count++;
+	while (num > 0)
 	{
-		if (!(nt = nt / 10))
-			break ;
-		cnt++;
+		num = (num / 10);
+		count++;
 	}
-	if (!(str = (char *)malloc(sizeof(char) * (cnt + 1))))
-		return (NULL);
-	procces(str, cnt, n);
+	return (count);
+}
+
+char		*ft_itoa(long long n)
+{
+	char			*str;
+	unsigned int	i;
+	unsigned int	size;
+	long long		nbr;
+
+	size = ft_sizecheck(n);
+	i = 1;
+	nbr = ft_abs(n);
+	if (n < 0)
+		size++;
+	if (!(str = (char *)malloc(sizeof(char) * (size + 1))))
+		return (0);
+	if (n < 0)
+		str[0] = '-';
+	while (i <= size)
+	{
+		if (str[size - i] != '-')
+			str[size - i] = (nbr % 10) + '0';
+		nbr = nbr / 10;
+		i++;
+	}
+	str[size] = 0;
 	return (str);
 }
+
