@@ -6,15 +6,15 @@
 /*   By: yoncho <yoncho@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/30 21:44:55 by yoncho            #+#    #+#             */
-/*   Updated: 2021/02/11 21:28:05 by yoncho           ###   ########.fr       */
+/*   Updated: 2021/02/11 22:06:49 by yoncho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char		*ft_strdup(const char *s)
+char					*ft_strdup(const char *s)
 {
-	char	*st;
+	char				*st;
 	unsigned int		s_len;
 	unsigned int		i;
 

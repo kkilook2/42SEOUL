@@ -6,7 +6,7 @@
 /*   By: yoncho <yoncho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/30 21:43:36 by yoncho            #+#    #+#             */
-/*   Updated: 2021/02/11 21:54:25 by yoncho           ###   ########.fr       */
+/*   Updated: 2021/02/11 22:11:16 by yoncho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,13 +55,10 @@ char					*ft_get_pointer(unsigned long long i)
 	char				*tmp;
 
 	hexa_info = "0123456789abcdef";
-	len = 0;
+	len = 1;
 	p = i;
-	while (p != 0)
-	{
-		p /= 16;
+	while ((p /= 16) != 0)
 		len++;
-	}
 	ret = malloc(sizeof(char) * len + 1);
 	ret[len] = '\0';
 	if (i == 0)
@@ -76,7 +73,8 @@ char					*ft_get_pointer(unsigned long long i)
 	return (tmp);
 }
 
-char					*ft_get_hexa(const char **format, unsigned int i)
+char					*ft_get_hexa(const char **format,
+						unsigned int i)
 {
 	char				*ret;
 	char				*hexa_info;
