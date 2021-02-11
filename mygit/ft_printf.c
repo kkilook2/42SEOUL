@@ -6,7 +6,7 @@
 /*   By: yoncho <yoncho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/30 19:54:28 by yoncho            #+#    #+#             */
-/*   Updated: 2021/02/10 20:59:57 by yoncho           ###   ########.fr       */
+/*   Updated: 2021/02/11 21:56:58 by yoncho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,18 +92,15 @@ int				ft_treat_format(const char *format, va_list ap, int len)
 	return (len);
 }
 
-int				ft_printf(const char *input, ...)
+int				ft_printf(const char *format, ...)
 {
 	va_list		ap;
-	const char	*format;
 	int			len;
 
 	len = 0;
-	format = ft_strdup(input);
-	va_start(ap, input);
+	va_start(ap, format);
 	if (*format)
 		len += ft_treat_format(format, ap, len);
 	va_end(ap);
-	free((char *)format);
 	return (len);
 }

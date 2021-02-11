@@ -6,7 +6,7 @@
 /*   By: yoncho <yoncho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/30 21:43:36 by yoncho            #+#    #+#             */
-/*   Updated: 2021/02/10 21:09:32 by yoncho           ###   ########.fr       */
+/*   Updated: 2021/02/11 21:54:25 by yoncho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,13 @@ char					*ft_get_integer(const char **format,
 						unsigned long long i)
 {
 	char				*ret;
+	char				*tmp;
 
 	if (**format == 'u' && i < 0)
 		return (0);
-	ret = ft_strdup(ft_itoa(i));
+	tmp = ft_itoa(i);
+	ret = ft_strdup(tmp);
+	free((char*)tmp);
 	return (ret);
 }
 
@@ -49,6 +52,7 @@ char					*ft_get_pointer(unsigned long long i)
 	char				*hexa_info;
 	unsigned long long	p;
 	int					len;
+	char				*tmp;
 
 	hexa_info = "0123456789abcdef";
 	len = 0;
@@ -67,8 +71,9 @@ char					*ft_get_pointer(unsigned long long i)
 		ret[--len] = hexa_info[i % 16];
 		i /= 16;
 	}
-	ret = ft_strjoin("0x", ret);
-	return (ret);
+	tmp = ft_strjoin("0x", ret);
+	free(ret);
+	return (tmp);
 }
 
 char					*ft_get_hexa(const char **format, unsigned int i)
