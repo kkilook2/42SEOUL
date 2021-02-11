@@ -6,137 +6,87 @@
 /*   By: yoncho <yoncho@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/30 21:43:36 by yoncho            #+#    #+#             */
-/*   Updated: 2021/02/10 18:44:04 by yoncho           ###   ########.fr       */
+/*   Updated: 2021/02/11 22:11:16 by yoncho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-
-
-int		ft_treat_width(const char **format, va_list ap, t_flags *flag)
+char					*ft_get_char(char c)
 {
-  int  width;
+	char				*ret;
 
-  width = 0;
-  if (**format == '*')
-  {
-    width += va_arg(ap, int);
-    if (width < 0)
-    {
-      flag->minus = 1;
-      width *= -1;
-    }
-    return (width);
-  }
-  while (ft_isdigit(**format))
-  {
-    width *= 10;
-    width += (**format) - '0';
-    (*format)++;
-  }
-  (*format)--;
-  return (width);
+	ret = (char *)malloc(sizeof(char) * 2);
+	*ret = c;
+	ret[1] = '\0';
+	return (ret);
 }
 
-int   ft_treat_prec(const char **format, va_list ap)
+char					*ft_get_string(char *s)
 {
-  int  prec;
+	char				*ret;
 
-  prec = 0;
-  (*format)++;
-  if (**format == '*')
-    prec += va_arg(ap, int);
-  while (ft_isdigit(**format))
-  {
-    prec *= 10;
-    prec += (**format) - '0';
-    (*format)++;
-  }
-  (*format)--;
-  return (prec);
-}
-
-int   check_format(const char **format)
-{
-  if (**format == 'c' || **format == 's' || **format == 'd' ||
-      **format == 'i' || **format == 'u' || **format == 'p' ||
-      **format == 'x' || **format == 'X' || **format == '%')
-			return (1);
-  return (0);
-}
-
-char    *ft_get_char(char c)
-{
-  char *ret;
-  
-  ret = (char *)malloc(sizeof(char) * 2);
-  *ret = c;
-  ret[1] = '\0';
-  return ret;
-}
-
-char    *ft_get_string(char *s)
-{
-	char *ret;
-	
 	if (s == 0)
-    	return (ft_strdup("(null)"));
+		return (ft_strdup("(null)"));
 	ret = ft_strdup(s);
-	return ret;
+	return (ret);
 }
 
-char    *ft_get_integer(const char **format, unsigned long long i)
+char					*ft_get_integer(const char **format,
+						unsigned long long i)
 {
-	char *ret;
-	
+	char				*ret;
+	char				*tmp;
+
 	if (**format == 'u' && i < 0)
 		return (0);
-	ret = ft_strdup(ft_itoa(i));
-	return ret;
+	tmp = ft_itoa(i);
+	ret = ft_strdup(tmp);
+	free((char*)tmp);
+	return (ret);
 }
 
-char	*ft_get_pointer(unsigned long long i)
+char					*ft_get_pointer(unsigned long long i)
 {
-	char	*ret;
-	char	*hexa_info;
-	unsigned long long p;
-	int		len;
-	
+	char				*ret;
+	char				*hexa_info;
+	unsigned long long	p;
+	int					len;
+	char				*tmp;
+
 	hexa_info = "0123456789abcdef";
-	len = 0;
+	len = 1;
 	p = i;
-	while ( p != 0)
-	{
-		p /= 16;
+	while ((p /= 16) != 0)
 		len++;
-	}
 	ret = malloc(sizeof(char) * len + 1);
 	ret[len] = '\0';
 	if (i == 0)
 		*ret = '0';
-	while ( i != 0)
+	while (i != 0)
 	{
 		ret[--len] = hexa_info[i % 16];
 		i /= 16;
 	}
-	ret = ft_strjoin("0x", ret);
-	return (ret);
+	tmp = ft_strjoin("0x", ret);
+	free(ret);
+	return (tmp);
 }
 
-char    *ft_get_hexa(const char **format, unsigned int i)
+char					*ft_get_hexa(const char **format,
+						unsigned int i)
 {
-	char	*ret;
-	char	*hexa_info;
-	unsigned int len_i;
-	int		len;
-	
+	char				*ret;
+	char				*hexa_info;
+	unsigned int		unit_i;
+	int					len;
+
 	hexa_info = "0123456789abcdef";
 	len = 0;
-	len_i = i;
-	while (len_i != 0)
+	unit_i = i;
+	while (unit_i != 0)
 	{
-		len_i /= 16;
+		unit_i /= 16;
 		len++;
 	}
 	ret = (char *)malloc(sizeof(char) * len + 1);
@@ -150,6 +100,5 @@ char    *ft_get_hexa(const char **format, unsigned int i)
 			ret[len] = ft_toupper(ret[len]);
 		i /= 16;
 	}
-  	return ret;
+	return (ret);
 }
-

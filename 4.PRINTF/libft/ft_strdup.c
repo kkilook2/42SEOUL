@@ -6,29 +6,27 @@
 /*   By: yoncho <yoncho@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/30 21:44:55 by yoncho            #+#    #+#             */
-/*   Updated: 2020/12/31 01:01:39 by yoncho           ###   ########.fr       */
+/*   Updated: 2021/02/11 22:06:49 by yoncho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char		*ft_strdup(const char *s)
+char					*ft_strdup(const char *s)
 {
-	char	*st;
-	int		s_len;
-	int		i;
+	char				*st;
+	unsigned int		s_len;
+	unsigned int		i;
 
-	i = 0;
 	s_len = ft_strlen(s) + 1;
-	st = (char *)malloc(s_len * sizeof(char));
-	if (!st)
-		return (NULL);
-	while (i < s_len)
+	if (!(st = (char *)malloc(s_len * sizeof(char))))
+		return (0);
+	i = 0;
+	while (s[i])
 	{
 		st[i] = s[i];
 		i++;
 	}
-	st[i] = '\0';
+	st[i] = 0;
 	return (st);
-	free(st);
 }

@@ -6,31 +6,37 @@
 /*   By: yoncho <yoncho@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/31 17:05:53 by yoncho            #+#    #+#             */
-/*   Updated: 2020/12/31 18:10:40 by yoncho           ###   ########.fr       */
+/*   Updated: 2021/02/11 22:09:11 by yoncho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strjoin(char const *s1, char const *s2)
+char				*ft_strjoin(char const *s1, char const *s2)
 {
-	size_t	i;
-	char	*str;
+	char			*str;
+	unsigned int	i;
+	unsigned int	k;
 
+	i = 0;
+	k = 0;
 	if (!s1 || !s2)
 		return (0);
 	i = 0;
-	str = (char *)malloc((ft_strlen(s1) + ft_strlen(s2)) * sizeof(char));
-	if (!str)
+	if (!(str = (char *)malloc(ft_strlen(s1) + ft_strlen(s2) + 1)))
 		return (0);
-	while (*s1 != 0)
+	while (s1[i])
 	{
-		str[i++] = *s1++;
+		str[k] = s1[i++];
+		k++;
 	}
-	while (*s2)
+	i = 0;
+	while (s2[i])
 	{
-		str[i++] = *s2++;
+		str[k] = s2[i];
+		i++;
+		k++;
 	}
-	str[i] = 0;
+	str[k] = 0;
 	return (str);
 }
