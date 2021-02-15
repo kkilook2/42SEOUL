@@ -7,3 +7,4 @@ Number | Project | Language | Topic | Date
  1 | [Libft](https://github.com/kkilook2/42SEOUL/tree/main/1.Libft) | C | Mafefile, Headerfile | 2020.12.29
  2 | [Netwhat] | - | What is Network? | 2021.01.05
  3 | [Get_next_line](https://github.com/kkilook2/42SEOUL/tree/main/3.GNL) | C | '\n' in txt | 2021.01.27
+ 4 | [Ft_printf](https://github.com/kkilook2/42SEOUL/tree/main/4.PRINTF) | C | printf %csdiuxXp | 2021.02.14
