@@ -8,3 +8,5 @@ Number | Project | Language | Topic | Date
  2 | [Netwhat] | - | What is Network? | 2021.01.05
  3 | [Get_next_line](https://github.com/kkilook2/42SEOUL/tree/main/3.GNL) | C | '\n' in txt | 2021.01.27
  4 | [Ft_printf](https://github.com/kkilook2/42SEOUL/tree/main/4.PRINTF) | C | printf %csdiuxXp | 2021.02.14
+ 5 | [Pipex](https://github.com/yoncho/42SEOUL/tree/main/5.PIPEX) | C | pipe  | 2021.06.22
+ 
